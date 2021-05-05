@@ -1,2 +1,3 @@
 include ':api'
 include 'micro:service1'
+include 'micro:service2'

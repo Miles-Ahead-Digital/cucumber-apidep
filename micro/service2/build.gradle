@@ -1,0 +1,49 @@
+plugins {
+    id 'org.springframework.boot' version '2.4.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'milesahead.micro'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '16'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    testImplementation 'io.cucumber:cucumber-java:6.10.3'
+    testImplementation 'io.cucumber:cucumber-junit-platform-engine:6.10.3'
+    testImplementation 'io.cucumber:cucumber-spring:6.10.3'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+
+test {
+    useJUnitPlatform(){
+        excludeTags("disabled")
+    }
+    systemProperties(project.gradle.startParameter.systemPropertiesArgs)
+}
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+task cucumber() {
+    dependsOn assemble, testClasses
+    doLast {
+        javaexec {
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            args = ['--plugin', 'pretty', '--plugin', 'json:build/cucumber.json', '--plugin', 'html:build/cucumber-reports.html', '--glue', 'milesahead', 'src/test/resources']
+        }
+    }
+}
