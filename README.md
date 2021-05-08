@@ -1,9 +1,10 @@
-This repository belongs to issue https://github.com/cucumber/cucumber-jvm/issues/2296
+This repository belongs to github issue https://github.com/cucumber/cucumber-jvm/issues/2296 and the stackoverflow issue https://stackoverflow.com/questions/67444657/gradle-cucumber-task-cannot-choose-between-the-following-variants-of-project-a
 
-I'm using a cucumber taks in gradle wich works with module service2 (no references from service2 to another module). But it fails with module service1 which references an api module.
+I'm using a cucumber taks in gradle which works with a module called service2 (it has no references to another module). But it fails with module called service1 which references an module called api.
 
-This is the service Tasks (the same in both modules service1 and service2):
+This is the service Tasks which identical in both build.gradle in module service1 and module  service2:
 
+```
 task cucumber() {
     dependsOn assemble, testClasses
     doLast {
@@ -14,7 +15,7 @@ task cucumber() {
         }
     }
 }
-
+```
 
 To demonstrate the error run:
 
